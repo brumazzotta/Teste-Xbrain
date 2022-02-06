@@ -1,5 +1,5 @@
-function Titulo ({texto}){
-    return <h2>{texto}</h2>;
+function Titulo({ texto, ...rest }) {
+  return <h2 {...rest}>{texto}</h2>;
 }
 
-export default Titulo
+export default Titulo;
