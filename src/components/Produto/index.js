@@ -13,18 +13,20 @@ const styles = {
   highText: {
     fontSize: 15,
     color: "#546e7a",
-    fontFamily: "Open Sans",
     maxWidth: 250,
   },
   priceText: {
-    fontSize: 13,
+    fontSize: 24,
     color: "#546e7a",
-    fontFamily: "Open Sans",
+    fontWeight: "bold",
+    marginTop: 15,
   },
   lowText: {
-    fontSize: 10,
-    color: "#546e7a",
-    fontFamily: "Open Sans",
+    marginTop: 9,
+    fontSize: 12,
+    lineHeight: 1,
+    color: "#90A4AE",
+    textAlign: "left",
   },
 };
 
@@ -35,12 +37,19 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const valorParcelado = (produtoPreco) => produtoPreco / 12;
-
+const valorParcelado = (produtoPreco) => Math.trunc(produtoPreco * 12) / 100;
 const valorAVista = (produtoPreco) => produtoPreco - (produtoPreco / 100) * 10;
 
 function Produto({ produtoDesc, produtoPreco, srcImg, onChangeValue }) {
   const [isMouseOver, setIsMouveOver] = useState(false);
+  const [qtd, setQtd] = useState(0);
+
+  const onClickOperation = (operation) => {
+    if (qtd === 0 && operation === "sub") return;
+
+    operation === "add" ? setQtd(qtd + 1) : setQtd(qtd - 1);
+  };
+
   return (
     <div style={{}}>
       <Grid
@@ -48,18 +57,18 @@ function Produto({ produtoDesc, produtoPreco, srcImg, onChangeValue }) {
         onMouseLeave={(event) => setIsMouveOver(false)}
         style={{
           position: "relative",
-          minHeight: 300,
+          minHeight: 382,
+          paddingTop: 40,
         }}
         direction="column"
         container
-        alignItems="center"
-        justifyContent="center"
         //   style={{ backgroundColor: "red" }}
       >
-        <Grid>
+        <Grid style={{ textAlign: "center" }}>
           <img
             style={{
-              maxWidth: 170,
+              alignItems: "center",
+              maxWidth: 220,
             }}
             src={srcImg}
           />
@@ -67,29 +76,27 @@ function Produto({ produtoDesc, produtoPreco, srcImg, onChangeValue }) {
 
         {isMouseOver ? (
           <HoverComponent
+            qtd={qtd}
+            alterQtd={onClickOperation}
             onChangeValue={onChangeValue}
             produtoPreco={produtoPreco}
           >
             <Grid style={styles.highText}>{produtoDesc}</Grid>
-            <Grid style={styles.priceText}>{produtoPreco}</Grid>
+            <Grid style={styles.priceText}>R$ {produtoPreco},00</Grid>
             <Grid style={styles.lowText}>
-              `em ate 12x de R${" "}
-              {produtoPreco ? valorParcelado(produtoPreco) : 0}`
-            </Grid>
-            <Grid style={styles.lowText}>
-              R$ {valorAVista(produtoPreco)} a vista(10% de desconto)
+              em ate 12x de R$
+              {produtoPreco ? valorParcelado(produtoPreco) : 0} <br></br>
+              R$ {valorAVista(produtoPreco)} a vista (10% de desconto)
             </Grid>
           </HoverComponent>
         ) : (
           <>
             <Grid style={styles.highText}>{produtoDesc}</Grid>
-            <Grid style={styles.priceText}>{produtoPreco}</Grid>
+            <Grid style={styles.priceText}>R$ {produtoPreco},00</Grid>
             <Grid style={styles.lowText}>
-              `em ate 12x de R${" "}
-              {produtoPreco ? valorParcelado(produtoPreco) : 0}`
-            </Grid>
-            <Grid style={styles.lowText}>
-              R$ {valorAVista(produtoPreco)} a vista(10% de desconto)
+              em ate 12x de R$
+              {produtoPreco ? valorParcelado(produtoPreco) : 0} <br></br>
+              R$ {valorAVista(produtoPreco)} a vista (10% de desconto)
             </Grid>
           </>
         )}

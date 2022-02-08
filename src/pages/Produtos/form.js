@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-import Botao from "../../components/Buttons";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import React from "react";
@@ -19,7 +18,6 @@ function Form() {
           >
             <TextField
               label="Nome"
-              color="error"
               focused
               placeholder="Nome do cliente aqui"
               helperText="Campo obrigatorio"
@@ -38,7 +36,6 @@ function Form() {
           >
             <TextField
               label="Email"
-              color="error"
               focused
               placeholder="Digite seu email"
               id="email"
@@ -54,13 +51,7 @@ function Form() {
             noValidate
             autoComplete="off"
           >
-            <TextField
-              label="Sexo"
-              color="error"
-              focused
-              placeholder="Selecione"
-              id="sexo"
-            />
+            <TextField label="Sexo" focused placeholder="Selecione" id="sexo" />
           </Box>
         </Grid>
         <br></br>

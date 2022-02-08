@@ -5,6 +5,8 @@ import Titulo from "../../components/Titulo";
 import { Divider } from "@mui/material";
 import Form from "./form";
 import Botao from "../../components/Buttons";
+import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const produtos = [
   {
@@ -63,15 +65,32 @@ function Produtos() {
       ? setValorFinal(valorFinal + valorProduto)
       : setValorFinal(valorFinal - valorProduto);
   };
-  const [numero, setNumero] = useState(0);
+  const navigate = useNavigate();
   const [valorFinal, setValorFinal] = useState(0);
+  const nomeClient = () => document.getElementById("nome").value;
+
+  const onFinalizar = () => {
+    if (nomeClient().length < 3) {
+      window.alert("nome cliente não pode ser nulo");
+      return;
+    }
+    navigate("/finalizar", {
+      state: { nomeClient: nomeClient(), valorDaCompra: valorFinal },
+    });
+  };
 
   return (
-    <>
+    <div
+      style={{
+        maxWidth: 1140,
+        justifyContent: "center",
+        alignItems: "center",
+        margin: "0 auto",
+      }}
+    >
       <Titulo texto="Produtos" />
       <Divider></Divider>
-      <br></br>
-      <br></br>
+
       <Grid container spacing={1} style={{}}>
         {produtos.map((p) => (
           <Grid item lg={3} sm={4} xs={12}>
@@ -81,6 +100,7 @@ function Produtos() {
               produtoPreco={p.produtoPreco}
               qtd={p.qtd}
               onChangeValue={onHandleValorFinal}
+              valor={valorFinal}
             />
           </Grid>
         ))}
@@ -93,21 +113,21 @@ function Produtos() {
       <div>
         <Grid container spacing={10} style={{}} justifyContent="right">
           <Grid item xs={3}>
-            <h2>{valorFinal}</h2>
+            <h2>R$ {valorFinal}</h2>
           </Grid>
         </Grid>
       </div>
       <Grid container spacing={10} style={{}} justifyContent="right">
-        <Grid item xs={3}>
+        <Grid item xs={3} style={{ textAlign: "right", alignSelf: "right" }}>
           <Botao
-            color="error"
-            // onClick={(v) => console.log(document.getElementById("sexo").value)}
+            style={{ backgroundColor: "#ff9800" }}
+            onClick={() => onFinalizar()}
           >
             Finalizar Compra
           </Botao>
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 }
 
